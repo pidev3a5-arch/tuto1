@@ -1,0 +1,63 @@
+table Policy
+	lineageTag: 267eb65b-d15d-41f1-b72a-6a8e491cc92a
+
+	column Policy
+		dataType: string
+		lineageTag: f16206d8-faef-4ec6-a1fc-4a2ac85c359a
+		summarizeBy: none
+		sourceColumn: Policy
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Consultation ID'
+		dataType: string
+		lineageTag: 06081b2f-405b-42a2-b437-e9166c8ee80b
+		summarizeBy: none
+		sourceColumn: Consultation ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Consultation Start Date'
+		dataType: dateTime
+		lineageTag: 1936c8f1-ee95-43a2-9769-8fe4c6f41cc9
+		summarizeBy: none
+		sourceColumn: Consultation Start Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'Consultation End Date'
+		dataType: dateTime
+		lineageTag: bed9188a-0ca0-4e2f-8b69-a20735783bc2
+		summarizeBy: none
+		sourceColumn: Consultation End Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition Policy-69cd299f-23f8-4260-ba90-113fa50bde79 = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Quelle = Excel.Workbook(File.Contents("C:\Users\New-user\OneDrive\Project\Power BI\Challenges PowerBI\3\Challenge-3-Data.xlsx"), null, true),
+				    HRSYST_Table = Quelle{[Item="HRSYST",Kind="Table"]}[Data],
+				    #"Geänderter Typ" = Table.TransformColumnTypes(HRSYST_Table,{{"EmployeeID", type text}, {"Employee Name", type text}, {"Employee Region", type text}, {"Employee Position", type text}, {"Consultation ID", type text}, {"Consultation Name", type text}, {"Consultation Start Date", type date}, {"Consultation End Date", type date}, {"1st Interview Date", type date}, {"1st Interviewer ID", type text}, {"1st Interviewer Name", type text}, {"1st Interview Outcome", type text}, {"2nd Interview Date", type date}, {"2nd Interviewer ID", type text}, {"2nd Interviewer Name", type text}, {"2nd Interview Outcome", type text}}),
+				    #"Andere entfernte Spalten" = Table.SelectColumns(#"Geänderter Typ",{"Consultation ID", "Consultation Name", "Consultation Start Date", "Consultation End Date"}),
+				    #"Entfernte Duplikate" = Table.Distinct(#"Andere entfernte Spalten"),
+				    #"Umbenannte Spalten" = Table.RenameColumns(#"Entfernte Duplikate",{{"Consultation Name", "Policy"}}),
+				    #"Neu angeordnete Spalten" = Table.ReorderColumns(#"Umbenannte Spalten",{"Policy", "Consultation ID", "Consultation Start Date", "Consultation End Date"}),
+				    #"Sortierte Zeilen" = Table.Sort(#"Neu angeordnete Spalten",{{"Consultation ID", Order.Ascending}})
+				in
+				    #"Sortierte Zeilen"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

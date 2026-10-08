@@ -1,0 +1,118 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1124.5261426483612,
+            "y": 0
+          },
+          "nodeIndex": "Consultation Outcome",
+          "size": {
+            "height": 182.34232641669848,
+            "width": 263.28161837683365
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1063.0423491703775,
+            "y": 470.02593454861
+          },
+          "nodeIndex": "Employee",
+          "size": {
+            "height": 186.242832159459,
+            "width": 242
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 624.66256315890644,
+            "y": 410.07420138809573
+          },
+          "nodeIndex": "Interview Responses",
+          "size": {
+            "height": 397.81618376833717,
+            "width": 238
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "Interviewer",
+          "size": {
+            "height": 182.08262986235479,
+            "width": 238
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 278.52614264836131,
+            "y": 0
+          },
+          "nodeIndex": "Policy",
+          "size": {
+            "height": 184.34232641669846,
+            "width": 242
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 842.5261426483612,
+            "y": 0
+          },
+          "nodeIndex": "Sentiment",
+          "size": {
+            "height": 186.40303445656323,
+            "width": 242
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1124.2126920922904,
+            "y": 218.27497983342744
+          },
+          "nodeIndex": "Key Measures",
+          "size": {
+            "height": 126,
+            "width": 242
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1466.0854741847479,
+            "y": 329.23475599718307
+          },
+          "nodeIndex": "Region",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Alle Tabellen",
+      "zoomValue": 46.167665239237536,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Alle Tabellen",
+  "defaultDiagram": "Alle Tabellen"
+}

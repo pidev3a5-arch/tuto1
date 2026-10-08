@@ -1,0 +1,43 @@
+table Region
+	lineageTag: 8aa08f8d-3217-4e48-8dba-78d5e2e3ca3e
+
+	column location
+		dataType: string
+		lineageTag: 8fcdb918-38f5-4070-befa-cef2b9d633e1
+		summarizeBy: none
+		sourceColumn: location
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 22827804-074e-433c-8680-8d09a775ca33
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: a826ebde-cffc-410d-9b75-d9273447e1ef
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Region-61831a2f-cbce-44eb-9117-37403624d1c8 = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\New-user\OneDrive - Stellify Digital Solutions Ltd\Bureau\region.xlsx"), null, true),
+				    New_years_resolutions_Table = Source{[Item="New_years_resolutions",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(New_years_resolutions_Table,{{"location", type text}, {"state", type text}, {"region", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

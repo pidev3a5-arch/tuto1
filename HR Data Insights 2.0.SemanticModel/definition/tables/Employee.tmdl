@@ -1,0 +1,54 @@
+table Employee
+	lineageTag: d2cbb8b1-960b-442d-b400-3570243cfe34
+
+	column EmployeeID
+		dataType: string
+		lineageTag: 599db8fd-b79a-4890-9920-d2c201ce4ad8
+		summarizeBy: none
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee Name'
+		dataType: string
+		lineageTag: 83bf5452-9571-4333-aa1a-0a0a04699c97
+		summarizeBy: none
+		sourceColumn: Employee Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee Region'
+		dataType: string
+		lineageTag: 0049c794-b822-4e86-a050-2986c686e800
+		summarizeBy: none
+		sourceColumn: Employee Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee Position'
+		dataType: string
+		lineageTag: 8072df8c-67ec-411c-af81-527ae58da6a2
+		summarizeBy: none
+		sourceColumn: Employee Position
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Employee-877d04ae-0d63-4859-8a18-ce410da1b53b = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Quelle = HR_Data,
+				    #"Andere entfernte Spalten" = Table.SelectColumns(Quelle,{"EmployeeID", "Employee Name", "Employee Region", "Employee Position"}),
+				    #"Entfernte Duplikate" = Table.Distinct(#"Andere entfernte Spalten"),
+				    #"Sortierte Zeilen" = Table.Sort(#"Entfernte Duplikate",{{"EmployeeID", Order.Ascending}}),
+				    #"Jedes Wort groß geschrieben" = Table.TransformColumns(#"Sortierte Zeilen",{{"Employee Region", Text.Proper, type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Jedes Wort groß geschrieben","North","Northeast",Replacer.ReplaceText,{"Employee Region"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","East","Northeast",Replacer.ReplaceText,{"Employee Region"})
+				in
+				    #"Replaced Value1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

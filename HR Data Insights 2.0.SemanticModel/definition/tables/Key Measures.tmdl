@@ -1,0 +1,137 @@
+table 'Key Measures'
+	lineageTag: 667c1525-a77b-4cda-a3e7-44fabe8a5f88
+
+	measure 'Total Sentiment' =
+			
+			COUNT ( 'Interview Responses'[Consultation ID])
+		formatString: 0
+		lineageTag: bf5cee9a-2bc6-4ce5-afb1-38c40010b5e4
+
+	measure 'Total Interviews' = ```
+			COUNT('Interview Responses'[Response Key]) 
+			
+			```
+		formatString: 0
+		lineageTag: 5fff6d4d-1193-466a-8537-3a085f44c123
+
+	measure 'Refresh  date' = "Resfreshed Date : "&FORMAT(TODAY() - 200,"dd MMM, YYYY")
+		lineageTag: 85386b64-2c7f-4b8e-882f-4a54552458fa
+
+		changedProperty = FormatString
+
+	measure 'Happy %' =
+			
+			Var HPP = CALCULATE([Total Sentiment],
+			FILTER(Sentiment,Sentiment[Sentiment Classification]="Happy"))
+			VAR ALLInt =  CALCULATE([Total Sentiment])
+			VAR Result = DIVIDE(HPP,ALLInt)
+			RETURN
+			Result
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 77de30c8-e063-4e29-94bb-077ecaa0ef0e
+
+		changedProperty = FormatString
+
+	measure 'UnHappy %' =
+			
+			Var HPP = CALCULATE([Total Sentiment],
+			FILTER(Sentiment,Sentiment[Sentiment Classification]="Unhappy"))
+			VAR ALLInt =  CALCULATE([Total Sentiment])
+			VAR Result = DIVIDE(HPP,ALLInt)
+			RETURN
+			Result
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 4316b239-fc9a-41c5-8c27-7b94fa4c4395
+
+		changedProperty = FormatString
+
+	measure 'Neutral %' =
+			
+			Var HPP = CALCULATE([Total Sentiment],
+			FILTER(Sentiment,Sentiment[Sentiment Classification]="Neutral"))
+			VAR ALLInt =  CALCULATE([Total Sentiment])
+			VAR Result = DIVIDE(HPP,ALLInt)
+			RETURN
+			Result
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 58a87a17-58f4-419a-81ac-ac8e5b1a190a
+
+		changedProperty = FormatString
+
+	measure img_check_url = "https://i.ibb.co/k86jH6d/check.png"
+		lineageTag: e2846674-82c0-47f2-97b7-2f5e6358c06c
+		dataCategory: ImageUrl
+
+	measure 'Total Interviews  2' = ```
+			COUNT('Interview Responses'[Response Key]) 
+			```
+		formatString: 0
+		lineageTag: 65f0100d-523a-4624-b357-ecd9e924650a
+
+	measure 'Filters Label' = ```
+			
+			VAR P001 =
+			    IF ( ISFILTERED ( Region[region] ), 1, 0 )
+			VAR P002 =
+			    IF ( ISFILTERED (Policy[Policy]), 1, 0 )
+			VAR P003 =
+			    IF ( ISFILTERED ( Interviewer[Interviewer Name]), 1, 0 )
+			VAR P004 =
+			    IF ( ISFILTERED (Employee[Employee Position] ), 1, 0 )
+			VAR _nbr_of_filters_on = 
+			    P001 + P002 + P003 + P004 
+			  
+			RETURN  
+			  
+			"Filters ("&_nbr_of_filters_on&"/4)"
+			```
+		lineageTag: 2039b347-1060-4e27-81c4-85574dacbae7
+
+	measure 'Check_radio_Img url' = "https://i.ibb.co/fdb7nZB/tick-square.png"
+		lineageTag: b0850d23-3637-4aa1-8338-fa5fad5c0de1
+		dataCategory: ImageUrl
+
+	measure 'UnCheck_radio_Img url' = "https://i.ibb.co/rbRJKPt/tick-square-1.png"
+		lineageTag: 3e6c5293-49f1-47f3-8dd6-9ecfebb9b7bd
+		dataCategory: ImageUrl
+
+	measure 'Sentiment Result - Happy' =
+			
+			CALCULATE([Total Sentiment],
+			FILTER(Sentiment,Sentiment[Sentiment Classification]="Happy"))
+		formatString: 0
+		lineageTag: 3e605732-ec3c-4286-8400-941f810a3c6d
+
+	measure 'Sentiment Result - Unhappy' =
+			
+			CALCULATE([Total Sentiment],
+			FILTER(Sentiment,Sentiment[Sentiment Classification]="Unhappy"))
+		formatString: 0
+		lineageTag: 913e69fe-6621-4b29-a4dd-e3803a830cea
+
+	measure 'Sentiment Result - Neutral' =
+			
+			CALCULATE([Total Sentiment],
+			FILTER(Sentiment,Sentiment[Sentiment Classification]="Neutral"))
+		formatString: 0
+		lineageTag: a159e7f9-402f-4bdd-8c8d-d890044b002f
+
+	measure 'Total Employees' = ```
+			DISTINCTCOUNT('Interview Responses'[EmployeeID]) 
+			```
+		formatString: 0
+		lineageTag: 70f9831c-8a04-48ea-b263-122c19bb152d
+
+	partition 'Key Measures-bddfa1eb-5576-479d-a8e0-a6bfe7cee03e' = m
+		mode: import
+		queryGroup: 'Helper Tables'
+		source =
+				let
+				    Quelle = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Spalte ""1""" = _t]),
+				    #"Geänderter Typ" = Table.TransformColumnTypes(Quelle,{{"Spalte ""1""", type text}}),
+				    #"Entfernte Spalten" = Table.RemoveColumns(#"Geänderter Typ",{"Spalte ""1"""})
+				in
+				    #"Entfernte Spalten"
+
+	annotation PBI_ResultType = Table
+

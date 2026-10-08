@@ -1,0 +1,111 @@
+expression HR_Data =
+		let
+		    Quelle = Excel.Workbook(File.Contents("C:\Users\New-user\OneDrive\Project\Power BI\Challenges PowerBI\3\Challenge-3-Data.xlsx"), null, true),
+		    HRSYST_Table = Quelle{[Item="HRSYST",Kind="Table"]}[Data],
+		    Type = Table.TransformColumnTypes(HRSYST_Table,{{"EmployeeID", type text}, {"Employee Name", type text}, {"Employee Region", type text}, {"Employee Position", type text}, {"Consultation ID", type text}, {"Consultation Name", type text}, {"Consultation Start Date", type date}, {"Consultation End Date", type date}, {"1st Interview Date", type date}, {"1st Interviewer ID", type text}, {"1st Interviewer Name", type text}, {"1st Interview Outcome", type text}, {"2nd Interview Date", type date}, {"2nd Interviewer ID", type text}, {"2nd Interviewer Name", type text}, {"2nd Interview Outcome", type text}})
+		in
+		    Type
+	lineageTag: b23246c5-5d48-48ec-a2d8-d2e3525eb766
+	queryGroup: Connections
+
+	annotation PBI_ResultType = Table
+
+expression 'Sentiment Outcomes 1' =
+		let
+		    Quelle = HR_Data,
+		    #"Andere entfernte Spalten" = Table.SelectColumns(Quelle,{"1st Interview Outcome"}),
+		    #"Umbenannte Spalten" = Table.RenameColumns(#"Andere entfernte Spalten",{{"1st Interview Outcome", "Sentiment Classification"}})
+		in
+		    #"Umbenannte Spalten"
+	lineageTag: c2d2a89d-1b18-4fa3-8c68-5afbeea225a7
+	queryGroup: Dimensions
+
+	annotation PBI_ResultType = Table
+
+expression 'Sentiment Outcomes 2' =
+		let
+		    Quelle = HR_Data,
+		    #"Andere entfernte Spalten" = Table.SelectColumns(Quelle,{"2nd Interview Outcome"}),
+		    #"Umbenannte Spalten" = Table.RenameColumns(#"Andere entfernte Spalten",{{"2nd Interview Outcome", "Sentiment Classification"}})
+		in
+		    #"Umbenannte Spalten"
+	lineageTag: 35f3b801-f7dd-4158-8818-3f761d2678df
+	queryGroup: Dimensions
+
+	annotation PBI_ResultType = Table
+
+expression 'Interviewer 1' =
+		let
+		    Quelle = HR_Data,
+		    #"Andere entfernte Spalten" = Table.SelectColumns(Quelle,{"1st Interviewer ID", "1st Interviewer Name"}),
+		    #"Umbenannte Spalten" = Table.RenameColumns(#"Andere entfernte Spalten",{{"1st Interviewer ID", "Interviewer ID"}, {"1st Interviewer Name", "Interviewer Name"}})
+		in
+		    #"Umbenannte Spalten"
+	lineageTag: c8f4ea13-379c-4d22-b5a2-d7533ba8436d
+	queryGroup: Dimensions
+
+	annotation PBI_ResultType = Table
+
+expression 'Interviewer 2' =
+		let
+		    Quelle = HR_Data,
+		    #"Andere entfernte Spalten" = Table.SelectColumns(Quelle,{"2nd Interviewer ID", "2nd Interviewer Name"}),
+		    #"Umbenannte Spalten" = Table.RenameColumns(#"Andere entfernte Spalten",{{"2nd Interviewer ID", "Interviewer ID"}, {"2nd Interviewer Name", "Interviewer Name"}})
+		in
+		    #"Umbenannte Spalten"
+	lineageTag: 27c8df93-5c42-4db4-8312-3f17d9ed7ace
+	queryGroup: Dimensions
+
+	annotation PBI_ResultType = Table
+
+expression 'Interview Responses Unpivoted' =
+		let
+		    Quelle = HR_Data,
+		    #"Andere entfernte Spalten" = Table.SelectColumns(Quelle,{"EmployeeID", "Consultation ID", "Consultation Start Date", "1st Interview Date", "1st Interviewer ID", "1st Interview Outcome", "2nd Interview Date", "2nd Interviewer ID", "2nd Interview Outcome"}),
+		    #"Hinzugefügte benutzerdefinierte Spalte" = Table.AddColumn(#"Andere entfernte Spalten", "Interview Outcome Sequence", each [1st Interview Outcome] & " - " & [2nd Interview Outcome], type text),
+		    #"Zusammengeführte Abfragen1" = Table.NestedJoin(#"Hinzugefügte benutzerdefinierte Spalte", {"1st Interview Outcome"}, Sentiment, {"Sentiment Classification"}, "Sentiment", JoinKind.LeftOuter),
+		    #"Erweiterte Sentiment" = Table.ExpandTableColumn(#"Zusammengeführte Abfragen1", "Sentiment", {"Sentiment Score"}, {"1st Interview Score"}),
+		    #"Zusammengeführte Abfragen2" = Table.NestedJoin(#"Erweiterte Sentiment", {"2nd Interview Outcome"}, Sentiment, {"Sentiment Classification"}, "Sentiment", JoinKind.LeftOuter),
+		    #"Erweiterte Sentiment1" = Table.ExpandTableColumn(#"Zusammengeführte Abfragen2", "Sentiment", {"Sentiment Score"}, {"2nd Interview Score"}),
+		    #"Zusammengeführte Abfragen" = Table.NestedJoin(#"Erweiterte Sentiment1", {"Interview Outcome Sequence"}, #"Consultation Outcome", {"Interview Outcome Sequence"}, "Sentiment Classification", JoinKind.LeftOuter),
+		    #"Erweiterte Sentiment Classification" = Table.ExpandTableColumn(#"Zusammengeführte Abfragen", "Sentiment Classification", {"Interview Outcome Key"}, {"Interview Outcome Key"}),
+		    #"Entfernte Spalten" = Table.RemoveColumns(#"Erweiterte Sentiment Classification",{"1st Interview Outcome", "2nd Interview Outcome", "Interview Outcome Sequence"})
+		in
+		    #"Entfernte Spalten"
+	lineageTag: 94eb495f-d504-42ea-a232-04dc9409e528
+	queryGroup: Facts
+
+	annotation PBI_ResultType = Table
+
+expression 'Interview Responses 1' =
+		let
+		    Quelle = #"Interview Responses Unpivoted",
+		    #"Entfernte Spalten" = Table.RemoveColumns(Quelle,{"2nd Interview Date", "2nd Interviewer ID", "2nd Interview Score"}),
+		    #"Umbenannte Spalten" = Table.RenameColumns(#"Entfernte Spalten",{{"1st Interviewer ID", "Interviewer ID"}, {"1st Interview Score", "Interview Score"}, {"1st Interview Date", "Interview Date"}}),
+		    #"Hinzugefügte benutzerdefinierte Spalte" = Table.AddColumn(#"Umbenannte Spalten", "Interview No.", each 1, Int64.Type),
+		    #"Hinzugefügte benutzerdefinierte Spalte1" = Table.AddColumn(#"Hinzugefügte benutzerdefinierte Spalte", "Day in Consultation Period", each 1 + Number.From([Interview Date] - [Consultation Start Date]), Int64.Type)
+		in
+		    #"Hinzugefügte benutzerdefinierte Spalte1"
+	lineageTag: 624a3c5d-ed8f-403d-ba7f-b83ec5f46eb1
+	queryGroup: Facts
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Interview Responses 2' =
+		let
+		    Quelle = #"Interview Responses Unpivoted",
+		    #"Entfernte Spalten" = Table.RemoveColumns(Quelle,{"1st Interview Date", "1st Interviewer ID", "1st Interview Score"}),
+		    #"Umbenannte Spalten" = Table.RenameColumns(#"Entfernte Spalten",{{"2nd Interviewer ID", "Interviewer ID"}, {"2nd Interview Score", "Interview Score"}, {"2nd Interview Date", "Interview Date"}}),
+		    #"Hinzugefügte benutzerdefinierte Spalte" = Table.AddColumn(#"Umbenannte Spalten", "Interview No.", each 2, Int64.Type),
+		    #"Hinzugefügte benutzerdefinierte Spalte1" = Table.AddColumn(#"Hinzugefügte benutzerdefinierte Spalte", "Day in Consultation Period", each 1 + Number.From([Interview Date] - [Consultation Start Date]), Int64.Type)
+		in
+		    #"Hinzugefügte benutzerdefinierte Spalte1"
+	lineageTag: ad5d020b-0bed-4fca-879d-4757bb3a37fd
+	queryGroup: Facts
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

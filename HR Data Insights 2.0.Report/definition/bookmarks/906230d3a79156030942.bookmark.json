@@ -1,0 +1,1276 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Details",
+  "name": "906230d3a79156030942",
+  "options": {
+    "applyOnlyToTargetVisuals": true,
+    "targetVisualNames": [
+      "70c6ccd17477eee78eb9",
+      "071266fc57d1560de6cd",
+      "ae343e53ce3094e4e9db",
+      "0076a2e9abad049e145c",
+      "a4c2006023a324db1746",
+      "a29245a8b90eaa732a6d",
+      "ff48de9530d4687cb79d",
+      "289b90e16b3b05d242a2",
+      "fd854744597a43e410b7",
+      "fc7ce1309848ab773aec",
+      "c884fe39690349eabc9b",
+      "4283f7bdee166dea7853",
+      "816c84b6c6ae890a4706",
+      "a5413bedac488b09981a",
+      "6f7810941c53c8ec29a9",
+      "1dd9cbb5e18410a50e9d",
+      "3d00fd9f9067457e2231"
+    ],
+    "suppressData": true
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "6c7fe11b9eead040549b",
+    "sections": {
+      "6c7fe11b9eead040549b": {
+        "visualContainers": {
+          "399188f6bd000bb460c8": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "5a9faf0e0fcbe9f46a4a",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interview Responses"
+                        }
+                      },
+                      "Property": "Interview text"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "i",
+                                "Entity": "Interview Responses",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "i"
+                                            }
+                                          },
+                                          "Property": "Interview text"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'1st'"
+                                          }
+                                        }
+                                      ],
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'2nd'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "f3243f94e37057a43700": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "4ad590f64d085c51c4db",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "ac82bdc35d2ed237cce0": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "44aa555a0c1d9761c0eb": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "aa048c3c838ad5d93d79",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interviewer"
+                        }
+                      },
+                      "Property": "Interviewer Name"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "false"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "af4aa512ee37ca32688b": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "878bb78b68fdec321dae",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "Employee Position"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "false"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "39b283afeeba1009b06d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "175283311a18f2cbf1f5",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Region"
+                        }
+                      },
+                      "Property": "region"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "false"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "2e9fe69993057da2c0b8": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a44086fab642956e9bef",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Policy"
+                        }
+                      },
+                      "Property": "Policy"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "false"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Policy"
+                        }
+                      },
+                      "Property": "Policy"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "0fab1def6cb41cae010c": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "762b3c5fed01431a8b13": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "3d00fd9f9067457e2231": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "66c491b7487883365cff",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Policy"
+                        }
+                      },
+                      "Property": "Policy"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4132a73138e9cbd820cd",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "EmployeeID"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "73d36b43dbae67a8ae44",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "Employee Position"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7f02e1f92c6bee2cddfe",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "Employee Name"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f92bc00d83c2ddd0c8a7",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interview Responses"
+                        }
+                      },
+                      "Property": "Interview Date"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3bf77b57ddf1bfee5f6f",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interview Responses"
+                        }
+                      },
+                      "Property": "Interview text"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "243b3517ddefa9887aa7",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interviewer"
+                        }
+                      },
+                      "Property": "Interviewer Name"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c3847e268cd6ec65c8cd",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sentiment"
+                        }
+                      },
+                      "Property": "Sentiment Result - SVG"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "Employee Position"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "ae343e53ce3094e4e9db": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "67e42f138b17a8fa89f9",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Policy"
+                        }
+                      },
+                      "Property": "Policy"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0351623802977fee4a82",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Policy"
+                        }
+                      },
+                      "Property": "Consultation Start Date"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "baa204732e1f13b43895",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Policy"
+                        }
+                      },
+                      "Property": "Consultation End Date"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Policy"
+                        }
+                      },
+                      "Property": "Consultation End Date"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "0076a2e9abad049e145c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "1a5ea42f8c2465eceb71",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interviewer"
+                        }
+                      },
+                      "Property": "Interviewer Name"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f3a6f6703933c4479161",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredColumnChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interviewer"
+                        }
+                      },
+                      "Property": "Interviewer Name"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "a4c2006023a324db1746": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a475e8fa6a64be5d0de8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interviewer"
+                        }
+                      },
+                      "Property": "Interviewer Name"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f685c472c64985c74858",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "a29245a8b90eaa732a6d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "37abacee6029de8d2554",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Happy %"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Happy %"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "ff48de9530d4687cb79d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "930a124e337b0a85fd2a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Neutral %"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Neutral %"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "289b90e16b3b05d242a2": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "c6f68e826b0e7a1ceda3",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "UnHappy %"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "UnHappy %"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "fd854744597a43e410b7": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "fc7ce1309848ab773aec": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "806eeffa98d2c098c6d6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "Employee Position"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ac81967caf375bf998d2",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Interview Responses"
+                            }
+                          },
+                          "Property": "Consultation ID"
+                        }
+                      },
+                      "Function": 5
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a7d1b2a6e966eb526c9a",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sentiment"
+                        }
+                      },
+                      "Property": "Sentiment Classification"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "hundredPercentStackedBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Interview Responses"
+                            }
+                          },
+                          "Property": "Consultation ID"
+                        }
+                      },
+                      "Function": 5
+                    }
+                  }
+                },
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sentiment"
+                        }
+                      },
+                      "Property": "Sentiment Classification"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "Employee Position"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "c884fe39690349eabc9b": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0e342fd82278b0d7a9c8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sentiment"
+                        }
+                      },
+                      "Property": "Sentiment Classification"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3a009b66f13c3975c542",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e66af1b91cd8d4724f36",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Interview Responses"
+                        }
+                      },
+                      "Property": "Interview Descrpt"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredColumnChart",
+              "objects": {}
+            }
+          },
+          "1ae6bde429003cb201d2": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "f4ac00538805a15b8919": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "d4d29dcae49703700d0e": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "1dd9cbb5e18410a50e9d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "5603af58820aaec60bd9",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "EmployeeID"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "textSearchSlicerF85E2E78BE4A4D7D9F99ED75B5D71C85",
+              "objects": {}
+            }
+          },
+          "816c84b6c6ae890a4706": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "1d99fab68de01b86f577",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Employee"
+                        }
+                      },
+                      "Property": "Employee Name"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "textSearchSlicerF85E2E78BE4A4D7D9F99ED75B5D71C85",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "e",
+                                "Entity": "Employee",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "Contains": {
+                                    "Left": {
+                                      "Column": {
+                                        "Expression": {
+                                          "SourceRef": {
+                                            "Source": "e"
+                                          }
+                                        },
+                                        "Property": "Employee Name"
+                                      }
+                                    },
+                                    "Right": {
+                                      "Literal": {
+                                        "Value": "'Morris'"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "a5413bedac488b09981a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "38e5f6047fd8c31a3435",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sentiment"
+                        }
+                      },
+                      "Property": "Sentiment Classification"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "false"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "6f7810941c53c8ec29a9": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d9256f4a75641c9784f4",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "06c38811fc0e9e7fd4fd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Sentiment Result - Happy"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d379c948bcb17acf44f4",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Sentiment Result - Unhappy"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "9ed973af84f4825ab0cd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Sentiment Result - Neutral"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "29311ebb6c0644e26dde",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Employees"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Total Interviews"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "visualContainerGroups": {
+          "d6b8ed43a50740ecc367": {
+            "isHidden": true
+          },
+          "70c6ccd17477eee78eb9": {
+            "children": {
+              "071266fc57d1560de6cd": {
+                "isHidden": true
+              },
+              "4283f7bdee166dea7853": {
+                "isHidden": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              },
+              "visible": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

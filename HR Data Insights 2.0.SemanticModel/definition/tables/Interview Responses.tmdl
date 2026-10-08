@@ -1,0 +1,130 @@
+table 'Interview Responses'
+	lineageTag: 46125f55-c2e4-41b2-9210-10f0f62109f9
+
+	column EmployeeID
+		dataType: string
+		lineageTag: 72376c7e-0218-4379-8553-a86eaf6d35cc
+		summarizeBy: none
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Consultation ID'
+		dataType: string
+		lineageTag: 18b80fb3-adc1-4a61-a92a-91adc11203b1
+		summarizeBy: none
+		sourceColumn: Consultation ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Consultation Start Date'
+		dataType: dateTime
+		lineageTag: ca17690d-dcf2-4f34-9170-03a357ff61b5
+		summarizeBy: none
+		sourceColumn: Consultation Start Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'Interview Date'
+		dataType: dateTime
+		lineageTag: fcd7b376-226a-4569-94f9-fc1f634d242c
+		summarizeBy: none
+		sourceColumn: Interview Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'Interviewer ID'
+		dataType: string
+		lineageTag: a6ad847a-4fa3-47d1-a843-4070eb1cbe08
+		summarizeBy: none
+		sourceColumn: Interviewer ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Interview Score'
+		dataType: int64
+		formatString: 0
+		lineageTag: ed962518-7241-48a1-a07f-a55b4593769b
+		summarizeBy: none
+		sourceColumn: Interview Score
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Interview Outcome Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3dac473e-1fd9-465a-a633-47299535131f
+		summarizeBy: none
+		sourceColumn: Interview Outcome Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Interview No.'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4aba96c4-cb78-4d94-9c59-84990a999505
+		summarizeBy: sum
+		sourceColumn: Interview No.
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day in Consultation Period'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3ba3acdf-51c8-4f7b-a415-0be9f218a9ab
+		summarizeBy: sum
+		sourceColumn: Day in Consultation Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Response Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: 66713b73-f1ba-4adc-9f8c-a450ecff3b87
+		summarizeBy: count
+		sourceColumn: Response Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Interview text' = IF([Interview No.] = 1, "1st", "2nd")
+		lineageTag: 72b4a11a-9c7b-415b-be7e-c36202e19c8f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Interview Descrpt' = RELATED('Policy'[Policy]) & ", " & [Interview text]
+		lineageTag: 6bf2aca6-d135-4484-8b71-0db73c1b7a70
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month = Month('Interview Responses'[Interview Date])&"-"&Year('Interview Responses'[Interview Date])
+		lineageTag: 0591a838-fe6c-4f03-a164-f961e4e1c6e5
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Interview Responses-e7c3c1d9-0707-443d-b001-d77dacbdca6a' = m
+		mode: import
+		queryGroup: Facts
+		source =
+				let
+				    Quelle = Table.Combine({#"Interview Responses 1", #"Interview Responses 2"}),
+				    #"Hinzugefügter Index" = Table.AddIndexColumn(Quelle, "Response Key", 1, 1),
+				    #"Geänderter Typ" = Table.TransformColumnTypes(#"Hinzugefügter Index",{{"Response Key", Int64.Type}}),
+				    #"Neu angeordnete Spalten" = Table.ReorderColumns(#"Geänderter Typ",{"Response Key", "EmployeeID", "Consultation ID", "Consultation Start Date", "Interview Date", "Interviewer ID", "Interview Score", "Interview Outcome Key", "Interview No.", "Day in Consultation Period"})
+				in
+				    #"Neu angeordnete Spalten"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

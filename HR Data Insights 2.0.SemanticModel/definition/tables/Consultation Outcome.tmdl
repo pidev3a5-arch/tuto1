@@ -1,0 +1,54 @@
+table 'Consultation Outcome'
+	lineageTag: 7a6925eb-a7f7-487d-886e-d465e81055c6
+
+	column 'Interview Outcome Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: c238f95b-db76-42b3-9116-70c86ed2167a
+		summarizeBy: none
+		sourceColumn: Interview Outcome Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column '1st Interview Outcome'
+		dataType: string
+		lineageTag: 3186b0ca-108f-4fe5-99da-640840b3d15c
+		summarizeBy: none
+		sourceColumn: 1st Interview Outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Interview Outcome'
+		dataType: string
+		lineageTag: 3041da93-a4e6-49e9-a0d5-de289d70dd1e
+		summarizeBy: none
+		sourceColumn: 2nd Interview Outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Interview Outcome Sequence'
+		dataType: string
+		lineageTag: 7f3dc1d1-93bd-4800-b414-5dacac4dc576
+		summarizeBy: none
+		sourceColumn: Interview Outcome Sequence
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Consultation Outcome-21192756-6fbd-4f61-b8d0-e6d61c5c924e' = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Quelle = HR_Data,
+				    #"Andere entfernte Spalten" = Table.SelectColumns(Quelle,{"1st Interview Outcome", "2nd Interview Outcome"}),
+				    #"Entfernte Duplikate" = Table.Distinct(#"Andere entfernte Spalten"),
+				    #"Hinzugefügter Index" = Table.AddIndexColumn(#"Entfernte Duplikate", "Index", 1, 1),
+				    #"Geänderter Typ" = Table.TransformColumnTypes(#"Hinzugefügter Index",{{"Index", Int64.Type}}),
+				    #"Umbenannte Spalten" = Table.RenameColumns(#"Geänderter Typ",{{"Index", "Interview Outcome Key"}}),
+				    #"Neu angeordnete Spalten" = Table.ReorderColumns(#"Umbenannte Spalten",{"Interview Outcome Key", "1st Interview Outcome", "2nd Interview Outcome"}),
+				    #"Hinzugefügte benutzerdefinierte Spalte" = Table.AddColumn(#"Neu angeordnete Spalten", "Interview Outcome Sequence", each [1st Interview Outcome] & " - " & [2nd Interview Outcome], type text)
+				in
+				    #"Hinzugefügte benutzerdefinierte Spalte"
+
+	annotation PBI_ResultType = Table
+

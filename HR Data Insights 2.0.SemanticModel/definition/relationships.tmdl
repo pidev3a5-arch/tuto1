@@ -1,0 +1,26 @@
+relationship 939fbf96-1267-4a99-be0b-0b652bf601cf
+	fromColumn: 'Interview Responses'.'Interview Outcome Key'
+	toColumn: 'Consultation Outcome'.'Interview Outcome Key'
+
+relationship 0561a747-622d-43a4-a8b7-576090723bd5
+	fromColumn: 'Interview Responses'.'Consultation ID'
+	toColumn: Policy.'Consultation ID'
+
+relationship 97106812-3c4c-4938-a280-d1c932f6300f
+	fromColumn: 'Interview Responses'.EmployeeID
+	toColumn: Employee.EmployeeID
+
+relationship 61f8e6ae-da8f-496b-8429-30ecca85a5e5
+	fromColumn: 'Interview Responses'.'Interviewer ID'
+	toColumn: Interviewer.'Interviewer ID'
+
+relationship aea8e053-faf5-4800-9e99-952693302400
+	fromColumn: 'Interview Responses'.'Interview Score'
+	toColumn: Sentiment.'Sentiment Score'
+
+relationship 484fd05a-6972-48c7-b82c-f246a30f2b67
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: Employee.'Employee Region'
+	toColumn: Region.region
+

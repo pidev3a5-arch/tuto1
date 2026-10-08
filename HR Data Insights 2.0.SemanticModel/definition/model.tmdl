@@ -1,0 +1,41 @@
+model Model
+	culture: de-DE
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup Facts
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup Dimensions
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup Connections
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Helper Tables'
+
+	annotation PBI_QueryGroupOrder = 3
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["HR_Data","Sentiment Outcomes 1","Sentiment Outcomes 2","Sentiment","Consultation Outcome","Employee","Policy","Interviewer 1","Interviewer 2","Interviewer","Interview Responses Unpivoted","Interview Responses 1","Interview Responses 2","Interview Responses","Key Measures","Region"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Sentiment
+ref table 'Consultation Outcome'
+ref table Policy
+ref table Employee
+ref table Interviewer
+ref table 'Interview Responses'
+ref table 'Key Measures'
+ref table Region
+
+ref cultureInfo de-DE
+
