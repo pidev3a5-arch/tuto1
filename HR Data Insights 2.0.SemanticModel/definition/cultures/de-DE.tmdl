@@ -4992,19 +4992,7 @@ cultureInfo de-DE
 			          "ConceptualProperty": "Sat Customers"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Satisfied": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "key_measures.notsat_customers": {
 			      "Definition": {
@@ -5013,19 +5001,7 @@ cultureInfo de-DE
 			          "ConceptualProperty": "NotSat Customers"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Not Satisfied": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    }
 			  },
 			  "Relationships": {

@@ -62,17 +62,6 @@
   ],
   "resourcePackages": [
     {
-      "name": "payPalKPIDonutChart55A431AB15A540ED924ACD72ED8D259F",
-      "type": "CustomVisual",
-      "items": [
-        {
-          "name": "payPalKPIDonutChart55A431AB15A540ED924ACD72ED8D259F.pbiviz.json",
-          "path": "payPalKPIDonutChart55A431AB15A540ED924ACD72ED8D259F.pbiviz.json",
-          "type": "CustomVisualMetadata"
-        }
-      ]
-    },
-    {
       "name": "RegisteredResources",
       "type": "RegisteredResources",
       "items": [
