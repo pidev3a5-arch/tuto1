@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR Data Insights 2.0 — Report Mockup</title>
+<style>
+  :root{
+    --bg:#f4f6f8;
+    --surface:#ffffff;
+    --ink:#1b2430;
+    --muted:#6b7785;
+    --line:#e3e8ee;
+    --accent:#2f6fed;
+    --happy:#2e9e5b;
+    --neutral:#e0a02a;
+    --unhappy:#d3455b;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:14px/1.45 "Segoe UI",Inter,system-ui,-apple-system,sans-serif}
+  .wrap{max-width:1400px;margin:0 auto;padding:24px 24px 64px}
+
+  /* ---------- page switcher ---------- */
+  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  .tab{border:1px solid var(--line);background:var(--surface);color:var(--muted);
+    padding:8px 16px;border-radius:999px;cursor:pointer;font:inherit;font-size:13px;box-shadow:var(--shadow)}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .page{display:none}
+  .page.active{display:block}
+
+  /* ---------- header ---------- */
+  .hdr{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);padding:16px 20px;margin-bottom:16px}
+  .hdr-top{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .hdr h1{font-size:18px;margin:0;letter-spacing:.2px}
+  .hdr .sub{color:var(--muted);font-size:12px}
+  .hdr .crumb{color:var(--accent);font-size:12px;font-weight:600}
+  .hdr-right{margin-left:auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .flt-label{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .flt-label b{color:var(--ink)}
+  .slicer{border:1px solid var(--line);border-radius:8px;padding:5px 26px 5px 10px;font-size:12px;
+    color:var(--muted);background:#fbfcfd;position:relative;cursor:pointer}
+  .slicer::after{content:"▾";position:absolute;right:9px;top:5px;color:#9aa6b2}
+  .slicer:hover{border-color:#c9d4e0}
+
+  /* ---------- grid ---------- */
+  .grid{display:grid;gap:16px;margin-bottom:16px}
+  .g5{grid-template-columns:repeat(5,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:1.35fr 1fr}
+  .g2e{grid-template-columns:1fr 1fr}
+  @media(max-width:1100px){.g5,.g3,.g2,.g2e{grid-template-columns:1fr 1fr}}
+  @media(max-width:700px){.g5,.g3,.g2,.g2e{grid-template-columns:1fr}}
+
+  /* ---------- card ---------- */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);padding:16px;min-height:120px}
+  .card h3{margin:0 0 2px;font-size:13px;font-weight:600;letter-spacing:.2px}
+  .card .hint{color:var(--muted);font-size:11px;margin:0 0 12px}
+
+  /* KPI */
+  .kpi .val{font-size:30px;font-weight:650;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+  .kpi .unit{font-size:12px;color:var(--muted);font-weight:400;margin-left:4px}
+  .delta{font-size:11px;margin-top:6px;color:var(--muted)}
+  .delta.up{color:var(--happy)} .delta.down{color:var(--unhappy)}
+  .spark{width:100%;height:22px;display:block;margin-top:10px}
+
+  /* bars */
+  .bars{display:flex;flex-direction:column;gap:11px}
+  .bar-row{display:grid;grid-template-columns:96px 1fr 52px;align-items:center;gap:10px;font-size:12px}
+  .bar-row .lbl{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .track{height:9px;background:#eef1f5;border-radius:999px;overflow:hidden}
+  .fill{height:100%;border-radius:999px}
+  .num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+  /* stacked */
+  .stack{display:flex;height:14px;border-radius:999px;overflow:hidden;margin-bottom:12px}
+  .stack div{height:100%}
+  .legend{display:flex;gap:16px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{text-align:left;color:var(--muted);font-weight:600;padding:7px 8px;border-bottom:1px solid var(--line)}
+  td{padding:7px 8px;border-bottom:1px solid #f1f4f7;font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:none}
+  .rank{color:var(--muted);width:26px}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
+  .p-happy{background:#e6f5ec;color:var(--happy)}
+  .p-neutral{background:#fbf1dd;color:#a9761a}
+  .p-unhappy{background:#fbe7eb;color:var(--unhappy)}
+
+  /* profile header */
+  .prof{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .avatar{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;
+    display:grid;place-items:center;font-size:18px;font-weight:600}
+  .prof dl{display:grid;grid-template-columns:repeat(2,auto);gap:6px 26px;margin:0;font-size:12px}
+  .prof dt{color:var(--muted)} .prof dd{margin:0;font-weight:600}
+
+  /* timeline */
+  .tl{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--line)}
+  .tl li{position:relative;padding:0 0 16px 18px;font-size:12px}
+  .tl li::before{content:"";position:absolute;left:-25px;top:4px;width:9px;height:9px;
+    border-radius:50%;background:#fff;border:2px solid var(--accent)}
+  .tl .when{color:var(--muted);font-size:11px}
+  .tl .what{font-weight:600;margin:1px 0 2px}
+
+  .note{margin-top:28px;background:var(--surface);border:1px dashed #cfd8e3;border-radius:12px;padding:18px 20px}
+  .note h2{font-size:13px;margin:0 0 10px}
+  .note ol{margin:0;padding-left:20px;color:var(--muted);font-size:12.5px}
+  .note li{margin-bottom:7px}
+  .note b{color:var(--ink)}
+  .grid-legend{font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true"  data-page="p1">1 · Executive Overview</button>
+    <button class="tab" role="tab" aria-selected="false" data-page="p2">2 · Employee Detail</button>
+    <button class="tab" role="tab" aria-selected="false" data-page="p3">3 · Interviewer Quality</button>
+    <button class="tab" role="tab" aria-selected="false" data-page="p4">4 · Consultation Outcomes</button>
+  </div>
+
+  <!-- ================= PAGE 1 ================= -->
+  <section class="page active" id="p1">
+    <div class="hdr">
+      <div class="hdr-top">
+        <h1>HR Data Insights</h1>
+        <span class="sub">Executive overview</span>
+        <div class="hdr-right">
+          <span class="flt-label">Filters (<b>2</b>/4)</span>
+          <span class="slicer">All regions</span>
+          <span class="slicer">All policies</span>
+          <span class="slicer">All positions</span>
+          <span class="sub">Refreshed date : 12 Oct, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g5">
+      <div class="card kpi"><h3>Total Interviews</h3><p class="hint">Consultations completed</p>
+        <div class="val">1,284</div>
+        <div class="delta up">▲ 8.2% vs last period</div>
+        <svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none"><polyline fill="none" stroke="#2e9e5b" stroke-width="1.5" points="0,17 14,15 28,16 42,12 56,13 70,8 84,9 100,4"/></svg>
+      </div>
+      <div class="card kpi"><h3>Total Employees</h3><p class="hint">Distinct employees seen</p>
+        <div class="val">412</div>
+        <div class="delta up">▲ 3.1% vs last period</div>
+        <svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none"><polyline fill="none" stroke="#2e9e5b" stroke-width="1.5" points="0,16 14,15 28,15 42,13 56,13 70,11 84,10 100,9"/></svg>
+      </div>
+      <div class="card kpi"><h3>Happy %</h3><p class="hint">Positive sentiment share</p>
+        <div class="val" style="color:var(--happy)">62.40<span class="unit">%</span></div>
+        <div class="delta up">▲ 4.6 pts</div>
+        <svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none"><polyline fill="none" stroke="#2e9e5b" stroke-width="1.5" points="0,18 14,17 28,14 42,15 56,11 70,12 84,8 100,7"/></svg>
+      </div>
+      <div class="card kpi"><h3>Unhappy %</h3><p class="hint">Negative sentiment share</p>
+        <div class="val" style="color:var(--unhappy)">18.10<span class="unit">%</span></div>
+        <div class="delta down">▲ 1.2 pts</div>
+        <svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none"><polyline fill="none" stroke="#d3455b" stroke-width="1.5" points="0,8 14,10 28,9 42,12 56,11 70,14 84,13 100,16"/></svg>
+      </div>
+      <div class="card kpi"><h3>Ongoing consultations</h3><p class="hint">Started, not yet closed</p>
+        <div class="val">34</div>
+        <div class="delta">Avg 41 days to close</div>
+        <svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none"><polyline fill="none" stroke="#2f6fed" stroke-width="1.5" points="0,12 14,10 28,13 42,11 56,12 70,10 84,11 100,10"/></svg>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Sentiment trend</h3><p class="hint">Share by consultation start month</p>
+        <svg viewBox="0 0 420 170" style="width:100%;height:190px">
+          <g stroke="#eef1f5"><line x1="30" y1="20" x2="410" y2="20"/><line x1="30" y1="60" x2="410" y2="60"/><line x1="30" y1="100" x2="410" y2="100"/><line x1="30" y1="140" x2="410" y2="140"/></g>
+          <polyline fill="none" stroke="#2e9e5b" stroke-width="2.5" points="40,120 100,108 160,112 220,92 280,86 340,64 400,58"/>
+          <polyline fill="none" stroke="#d3455b" stroke-width="2.5" points="40,86 100,92 160,88 220,100 280,96 340,110 400,112"/>
+          <polyline fill="none" stroke="#e0a02a" stroke-width="2.5" stroke-dasharray="5 4" points="40,104 100,100 160,100 220,92 280,96 340,96 400,90"/>
+          <g fill="#8a96a3" font-size="10" font-family="inherit" text-anchor="middle">
+            <text x="40" y="160">Jul</text><text x="100" y="160">Aug</text><text x="160" y="160">Sep</text><text x="220" y="160">Oct</text><text x="280" y="160">Nov</text><text x="340" y="160">Dec</text><text x="400" y="160">Jan</text>
+          </g>
+          <g fill="#8a96a3" font-size="10" font-family="inherit" text-anchor="end">
+            <text x="26" y="143">0%</text><text x="26" y="103">25%</text><text x="26" y="63">50%</text><text x="26" y="23">75%</text>
+          </g>
+        </svg>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--happy)"></i>Happy</span>
+          <span><i class="dot" style="background:var(--unhappy)"></i>Unhappy</span>
+          <span><i class="dot" style="background:var(--neutral)"></i>Neutral</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Sentiment split</h3><p class="hint">All consultations</p>
+        <svg viewBox="0 0 200 200" style="width:190px;height:190px;display:block;margin:0 auto">
+          <g transform="rotate(-90 100 100)" fill="none" stroke-width="30">
+            <circle cx="100" cy="100" r="70" stroke="#eef1f5"/>
+            <circle cx="100" cy="100" r="70" stroke="#2e9e5b" stroke-dasharray="274.5 439.8" stroke-dashoffset="0"/>
+            <circle cx="100" cy="100" r="70" stroke="#e0a02a" stroke-dasharray="85.8 439.8" stroke-dashoffset="-274.5"/>
+            <circle cx="100" cy="100" r="70" stroke="#d3455b" stroke-dasharray="79.5 439.8" stroke-dashoffset="-360.3"/>
+          </g>
+          <text x="100" y="94" text-anchor="middle" font-size="24" font-weight="650" font-family="inherit" fill="#1b2430">1,284</text>
+          <text x="100" y="114" text-anchor="middle" font-size="11" font-family="inherit" fill="#6b7785">consultations</text>
+        </svg>
+        <div class="bars" style="margin-top:14px">
+          <div class="bar-row"><span class="lbl">Happy</span><span class="track"><span class="fill" style="width:62.4%;background:var(--happy)"></span></span><span class="num">62.4%</span></div>
+          <div class="bar-row"><span class="lbl">Neutral</span><span class="track"><span class="fill" style="width:19.5%;background:var(--neutral)"></span></span><span class="num">19.5%</span></div>
+          <div class="bar-row"><span class="lbl">Unhappy</span><span class="track"><span class="fill" style="width:18.1%;background:var(--unhappy)"></span></span><span class="num">18.1%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <h3>Interviews by region</h3><p class="hint">Count of consultations</p>
+        <div class="bars">
+          <div class="bar-row"><span class="lbl">North</span><span class="track"><span class="fill" style="width:100%;background:#2f6fed"></span></span><span class="num">420</span></div>
+          <div class="bar-row"><span class="lbl">West</span><span class="track"><span class="fill" style="width:73%;background:#4f86f0"></span></span><span class="num">307</span></div>
+          <div class="bar-row"><span class="lbl">South</span><span class="track"><span class="fill" style="width:74%;background:#6f9df2"></span></span><span class="num">312</span></div>
+          <div class="bar-row"><span class="lbl">East</span><span class="track"><span class="fill" style="width:58%;background:#8fb4f5"></span></span><span class="num">245</span></div>
+        </div>
+      </div>
+      <div class="card kpi" style="min-height:0">
+        <h3>Average interview score</h3><p class="hint">All rounds</p>
+        <div class="val">7.4<span class="unit">/ 10</span></div>
+        <div class="delta up">▲ 0.3 vs last period</div>
+        <svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none" style="height:40px;margin-top:16px"><polyline fill="none" stroke="#2f6fed" stroke-width="1.5" points="0,18 14,17 28,16 42,17 56,13 70,12 84,10 100,8"/></svg>
+      </div>
+      <div class="card">
+        <h3>Top interviewers</h3><p class="hint">By positive sentiment</p>
+        <table>
+          <tr><th class="rank">#</th><th>Interviewer</th><th style="text-align:right">Happy %</th></tr>
+          <tr><td class="rank">1</td><td>A. Berrada</td><td style="text-align:right"><span class="pill p-happy">86%</span></td></tr>
+          <tr><td class="rank">2</td><td>C. Mansour</td><td style="text-align:right"><span class="pill p-happy">81%</span></td></tr>
+          <tr><td class="rank">3</td><td>S. Haddad</td><td style="text-align:right"><span class="pill p-happy">79%</span></td></tr>
+          <tr><td class="rank">4</td><td>N. Tazi</td><td style="text-align:right"><span class="pill p-happy">74%</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 2 ================= -->
+  <section class="page" id="p2">
+    <div class="hdr">
+      <div class="hdr-top">
+        <span class="crumb">HR Data Insights /</span><h1>Employee Detail</h1>
+        <div class="hdr-right"><span class="sub">Refreshed date : 12 Oct, 2026</span></div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Employee</h3><p class="hint">Selected record</p>
+        <div class="prof">
+          <div class="avatar">SB</div>
+          <dl>
+            <dt>Name</dt><dd>Salma Benali</dd>
+            <dt>Region</dt><dd>North</dd>
+            <dt>Position</dt><dd>Nurse</dd>
+            <dt>Policy</dt><dd>Policy A</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Consultation timeline</h3><p class="hint">Policy A</p>
+        <ul class="tl">
+          <li><span class="when">12 Jun 2026</span><div class="what">Consultation started</div><span class="pill p-neutral">Policy A</span></li>
+          <li><span class="when">14 Jun 2026</span><div class="what">1st interview · score 7.2</div><span class="pill p-happy">Happy</span></li>
+          <li><span class="when">02 Jul 2026</span><div class="what">2nd interview · score 8.1</div><span class="pill p-neutral">Neutral</span></li>
+          <li><span class="when">02 Jul 2026</span><div class="what">Outcome · Retained</div><span class="pill p-happy">41 days total</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <h3>Interview scores</h3><p class="hint">By round</p>
+        <div class="bars">
+          <div class="bar-row"><span class="lbl">1st</span><span class="track"><span class="fill" style="width:72%;background:#2f6fed"></span></span><span class="num">7.2</span></div>
+          <div class="bar-row"><span class="lbl">2nd</span><span class="track"><span class="fill" style="width:81%;background:#2e9e5b"></span></span><span class="num">8.1</span></div>
+          <div class="bar-row"><span class="lbl">Average</span><span class="track"><span class="fill" style="width:76.5%;background:#8fb4f5"></span></span><span class="num">7.65</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Sentiment composition</h3><p class="hint">This employee</p>
+        <div class="stack">
+          <div style="width:58%;background:var(--happy)"></div>
+          <div style="width:27%;background:var(--neutral)"></div>
+          <div style="width:15%;background:var(--unhappy)"></div>
+        </div>
+        <div class="bars">
+          <div class="bar-row"><span class="lbl">Happy</span><span class="track"><span class="fill" style="width:58%;background:var(--happy)"></span></span><span class="num">58%</span></div>
+          <div class="bar-row"><span class="lbl">Neutral</span><span class="track"><span class="fill" style="width:27%;background:var(--neutral)"></span></span><span class="num">27%</span></div>
+          <div class="bar-row"><span class="lbl">Unhappy</span><span class="track"><span class="fill" style="width:15%;background:var(--unhappy)"></span></span><span class="num">15%</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Policy comparison</h3><p class="hint">Positive sentiment by policy</p>
+        <div class="bars">
+          <div class="bar-row"><span class="lbl">Policy A</span><span class="track"><span class="fill" style="width:74%;background:#2e9e5b"></span></span><span class="num">74%</span></div>
+          <div class="bar-row"><span class="lbl">Policy B</span><span class="track"><span class="fill" style="width:68%;background:#6f9df2"></span></span><span class="num">68%</span></div>
+          <div class="bar-row"><span class="lbl">Policy C</span><span class="track"><span class="fill" style="width:59%;background:#a7c4f8"></span></span><span class="num">59%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Interview feedback</h3><p class="hint">Interview Descrpt · Interviewer · Score · Sentiment</p>
+      <table>
+        <thead><tr><th>Interview</th><th>Interviewer</th><th>Date</th><th style="text-align:right">Score</th><th>Sentiment</th></tr></thead>
+        <tbody>
+          <tr><td>Policy A, 1st</td><td>A. Berrada</td><td>14 Jun 2026</td><td style="text-align:right">7.2</td><td><span class="pill p-happy">Happy</span></td></tr>
+          <tr><td>Policy A, 2nd</td><td>C. Mansour</td><td>02 Jul 2026</td><td style="text-align:right">8.1</td><td><span class="pill p-neutral">Neutral</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 3 ================= -->
+  <section class="page" id="p3">
+    <div class="hdr">
+      <div class="hdr-top">
+        <span class="crumb">HR Data Insights /</span><h1>Interviewer Quality</h1>
+        <div class="hdr-right">
+          <span class="flt-label">Filters (<b>1</b>/4)</span>
+          <span class="slicer">All regions</span>
+          <span class="slicer">All policies</span>
+          <span class="slicer">All interviewers</span>
+          <span class="sub">Refreshed date : 12 Oct, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card kpi"><h3>Interviews conducted</h3><div class="val">128</div><div class="delta">This period</div></div>
+      <div class="card kpi"><h3>Average score</h3><div class="val">7.8<span class="unit">/ 10</span></div><div class="delta up">▲ 0.4</div></div>
+      <div class="card kpi"><h3>Happy %</h3><div class="val" style="color:var(--happy)">64.05<span class="unit">%</span></div><div class="delta up">▲ 2.1 pts</div></div>
+      <div class="card kpi"><h3>Rehire rate</h3><div class="val">72.4<span class="unit">%</span></div><div class="delta up">▲ 1.8 pts</div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Score by interview round</h3><p class="hint">Average interview score</p>
+        <div class="bars">
+          <div class="bar-row"><span class="lbl">1st interview</span><span class="track"><span class="fill" style="width:72%;background:#4f86f0"></span></span><span class="num">7.2</span></div>
+          <div class="bar-row"><span class="lbl">2nd interview</span><span class="track"><span class="fill" style="width:83%;background:#2f6fed"></span></span><span class="num">8.3</span></div>
+        </div>
+        <div class="grid-legend">Higher is better · scale 0–10</div>
+      </div>
+      <div class="card">
+        <h3>Outcome distribution</h3><p class="hint">Final consultation outcome</p>
+        <div class="stack">
+          <div style="width:48%;background:var(--happy)"></div>
+          <div style="width:30%;background:var(--unhappy)"></div>
+          <div style="width:22%;background:var(--neutral)"></div>
+        </div>
+        <div class="bars">
+          <div class="bar-row"><span class="lbl">Retained</span><span class="track"><span class="fill" style="width:48%;background:var(--happy)"></span></span><span class="num">48%</span></div>
+          <div class="bar-row"><span class="lbl">Rejected</span><span class="track"><span class="fill" style="width:30%;background:var(--unhappy)"></span></span><span class="num">30%</span></div>
+          <div class="bar-row"><span class="lbl">Withdrawn</span><span class="track"><span class="fill" style="width:22%;background:var(--neutral)"></span></span><span class="num">22%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Interviewer scorecard</h3><p class="hint">Sorted ascending by average score · data bars on score</p>
+      <table>
+        <thead><tr><th>Interviewer</th><th style="text-align:right">Interviews</th><th style="text-align:right">Avg score</th><th style="text-align:right">Happy %</th><th style="text-align:right">Unhappy %</th><th style="text-align:right">Rehire %</th></tr></thead>
+        <tbody>
+          <tr><td>N. El Idrissi</td><td style="text-align:right">96</td><td style="text-align:right">6.9</td><td style="text-align:right"><span class="pill p-happy">52%</span></td><td style="text-align:right"><span class="pill p-unhappy">28%</span></td><td style="text-align:right">58%</td></tr>
+          <tr><td>S. Haddad</td><td style="text-align:right">112</td><td style="text-align:right">7.4</td><td style="text-align:right"><span class="pill p-happy">63%</span></td><td style="text-align:right"><span class="pill p-neutral">20%</span></td><td style="text-align:right">68%</td></tr>
+          <tr><td>C. Mansour</td><td style="text-align:right">134</td><td style="text-align:right">7.6</td><td style="text-align:right"><span class="pill p-happy">71%</span></td><td style="text-align:right"><span class="pill p-neutral">18%</span></td><td style="text-align:right">72%</td></tr>
+          <tr><td>A. Berrada</td><td style="text-align:right">128</td><td style="text-align:right">8.1</td><td style="text-align:right"><span class="pill p-happy">81%</span></td><td style="text-align:right"><span class="pill p-happy">12%</span></td><td style="text-align:right">80%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 4 ================= -->
+  <section class="page" id="p4">
+    <div class="hdr">
+      <div class="hdr-top">
+        <span class="crumb">HR Data Insights /</span><h1>Consultation Outcomes</h1>
+        <div class="hdr-right">
+          <span class="flt-label">Filters (<b>1</b>/4)</span>
+          <span class="slicer">All policies</span>
+          <span class="slicer">All regions</span>
+          <span class="slicer">All rounds</span>
+          <span class="sub">Refreshed date : 12 Oct, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Outcome trend by month</h3><p class="hint">Closed consultations</p>
+        <svg viewBox="0 0 420 160" style="width:100%;height:175px">
+          <g stroke="#eef1f5"><line x1="30" y1="20" x2="410" y2="20"/><line x1="30" y1="60" x2="410" y2="60"/><line x1="30" y1="100" x2="410" y2="100"/><line x1="30" y1="140" x2="410" y2="140"/></g>
+          <polyline fill="none" stroke="#2e9e5b" stroke-width="2.5" points="40,60 100,84 160,66 220,96 280,104 340,120 400,132"/>
+          <polyline fill="none" stroke="#d3455b" stroke-width="2.5" points="40,110 100,96 160,118 220,108 280,120 340,116 400,124"/>
+          <polyline fill="none" stroke="#e0a02a" stroke-width="2.5" stroke-dasharray="5 4" points="40,134 100,128 160,126 220,122 280,118 340,120 400,116"/>
+          <g fill="#8a96a3" font-size="10" font-family="inherit" text-anchor="middle">
+            <text x="40" y="158">Jul</text><text x="100" y="158">Aug</text><text x="160" y="158">Sep</text><text x="220" y="158">Oct</text><text x="280" y="158">Nov</text><text x="340" y="158">Dec</text><text x="400" y="158">Jan</text>
+          </g>
+          <g fill="#8a96a3" font-size="10" font-family="inherit" text-anchor="end">
+            <text x="26" y="143">0</text><text x="26" y="103">400</text><text x="26" y="63">800</text><text x="26" y="23">1,200</text>
+          </g>
+        </svg>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--happy)"></i>Retained</span>
+          <span><i class="dot" style="background:var(--unhappy)"></i>Rejected</span>
+          <span><i class="dot" style="background:var(--neutral)"></i>Withdrawn</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>1st vs 2nd interview outcome</h3><p class="hint">Share of final outcomes by round</p>
+        <div class="bars" style="margin-bottom:18px">
+          <div class="bar-row"><span class="lbl">1st interview</span><span class="track"><span class="fill" style="width:41%;background:#8fb4f5"></span></span><span class="num">41%</span></div>
+        </div>
+        <div class="stack" style="height:26px;border-radius:6px">
+          <div style="width:41%;background:#8fb4f5"></div><div style="width:59%;background:#2f6fed"></div>
+        </div>
+        <div class="bars" style="margin-top:14px">
+          <div class="bar-row"><span class="lbl">2nd interview</span><span class="track"><span class="fill" style="width:59%;background:#2f6fed"></span></span><span class="num">59%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Consultation duration</h3><p class="hint">Start date → end date</p>
+        <div class="bars">
+          <div class="bar-row"><span class="lbl">Policy A</span><span class="track"><span class="fill" style="width:78%;background:#2f6fed"></span></span><span class="num">44 d</span></div>
+          <div class="bar-row"><span class="lbl">Policy B</span><span class="track"><span class="fill" style="width:66%;background:#4f86f0"></span></span><span class="num">37 d</span></div>
+          <div class="bar-row"><span class="lbl">Policy C</span><span class="track"><span class="fill" style="width:57%;background:#8fb4f5"></span></span><span class="num">32 d</span></div>
+        </div>
+        <div class="grid-legend">Average across closed consultations</div>
+      </div>
+      <div class="card">
+        <h3>Consultation volume by policy</h3><p class="hint">Count of consultations</p>
+        <div class="bars">
+          <div class="bar-row"><span class="lbl">Policy A</span><span class="track"><span class="fill" style="width:100%;background:#2f6fed"></span></span><span class="num">420</span></div>
+          <div class="bar-row"><span class="lbl">Policy B</span><span class="track"><span class="fill" style="width:74%;background:#4f86f0"></span></span><span class="num">312</span></div>
+          <div class="bar-row"><span class="lbl">Policy C</span><span class="track"><span class="fill" style="width:59%;background:#8fb4f5"></span></span><span class="num">248</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Outcome detail</h3><p class="hint">Policy × outcome, split by interview outcome sequence</p>
+      <table>
+        <thead><tr><th>Policy</th><th style="text-align:right">Retained</th><th style="text-align:right">Rejected</th><th style="text-align:right">Withdrawn</th><th style="text-align:right">Ongoing</th></tr></thead>
+        <tbody>
+          <tr><td>Policy A</td><td style="text-align:right"><span class="pill p-happy">48%</span></td><td style="text-align:right"><span class="pill p-unhappy">30%</span></td><td style="text-align:right"><span class="pill p-neutral">22%</span></td><td style="text-align:right">31</td></tr>
+          <tr><td>Policy B</td><td style="text-align:right"><span class="pill p-happy">44%</span></td><td style="text-align:right"><span class="pill p-unhappy">34%</span></td><td style="text-align:right"><span class="pill p-neutral">22%</span></td><td style="text-align:right">42</td></tr>
+          <tr><td>Policy C</td><td style="text-align:right"><span class="pill p-happy">52%</span></td><td style="text-align:right"><span class="pill p-unhappy">28%</span></td><td style="text-align:right"><span class="pill p-neutral">20%</span></td><td style="text-align:right">27</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= NOTES ================= -->
+  <div class="note">
+    <h2>Open questions before build</h2>
+    <ol>
+      <li><b>No date table.</b> Month/quarter/year slicing and time intelligence are unavailable until one is added.</li>
+      <li><b>Sentiment denominator mismatch.</b> <code>Total Sentiment</code> counts <code>Consultation ID</code> while <code>Total Interviews</code> counts <code>Response Key</code>. Confirm whether the % should be per response or per consultation.</li>
+      <li><b>Refresh date drifts.</b> <code>Refresh date</code> uses <code>TODAY() - 200</code>, so the label changes every day. Fix it or point it at max Consultation Start Date.</li>
+      <li><b>Region is orphaned.</b> <code>Region[region]</code> and <code>Employee[Employee Region]</code> have no relationship — confirm whether a mapping is intended.</li>
+      <li><b>All figures above are placeholder data</b> for layout review only, not real model output.</li>
+    </ol>
+  </div>
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const pages = document.querySelectorAll('.page');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.setAttribute('aria-selected', x === t));
+    pages.forEach(p => p.classList.toggle('active', p.id === t.dataset.page));
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }));
+</script>
+</body>
+</html>
